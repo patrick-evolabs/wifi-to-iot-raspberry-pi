@@ -1,43 +1,140 @@
-# wifi-to-iot-raspberry-pi
-Raspberry Pi-side component to receive Wi-Fi password via Bluetooth
+# WiFi-to-IoT Raspberry Pi
 
-Raspberry Pi Setup
-You need a SD card, power supply, and Ethernet cable.
-Follow the instructions here to write the (minimal) images for Raspbian OS to the Pi.
-Insert the SD card to the Pi. Connect your Pi to the Ethernet and power it up.
-Follow the instructions here to find the IP address of the Pi. 
-SSH to the Raspberry Pi.
-Rename Your Raspberry Pi
-Upload rename.sh to home directory. Make the script executable: chmod +x rename.sh 
-Run sudo ./rename.sh newName
-sudo reboot for changes to take effect. (You can reboot after you finish the next section)
-Bluetooth Configurations on Raspberry Pi
-Download pip	 			sudo apt-get install python-pip
-Download the Bluetooth module 	sudo apt-get install python-bluez
-Download Expect			sudo apt-get install expect
-Download the WiFi module 		sudo pip install wifi
-Upload rfcomm-server.py to the Pi’s home directory.
-Upload btconfig.sh to the Pi. Make the script executable: chmod +x btconfig.sh
-Run sudo ./btconfig.sh
+The server component for Raspberry Pi to receive Wi-Fi password via Bluetooth
+
+## Getting Started
+
+To set up the server on your Raspberry Pi, you can simply write the image file provided [here](https://drive.google.com/file/d/0B4uA-g8pjDs4QV9ZTmpmdG9xT0U/view) to the Pi. You will *not* have to follow the set up instructions below. Skip to *How to Use* section for instructions of the app. Your Pi will be ready to receive incoming connection.
+
+Otherwise, if you do *not* want to download the already-set image file, read the instructions below to set up your Pi from scratch.
+
+### Set Up Your Raspberry Pi
+
+* You need a FAT32-formatted 8GB SD card, power supply, and Ethernet cable.
+* Follow the instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/README.md) to write the image for Raspbian Jessie Lite to the Pi.
+* Insert the SD card to the Pi. Connect your Pi to the Ethernet and power it up.
+* Follow the instructions [here](https://www.raspberrypi.org/documentation/remote-access/ip-address.md) to find the IP address of the Pi. 
+* SSH to the Raspberry Pi.
+
+### Bluetooth Configurations on Raspberry Pi
+
+Download Pip
+
+```
+sudo apt-get install python-pip
+```
+
+Download the Bluetooth Module
+
+```
+sudo apt-get install python-bluez
+```
+
+Download the WiFi Module
+
+```
+sudo pip install wifi
+```
+
+Download Expect
+
+```
+sudo apt-get update
+```
+
+```
+sudo apt-get install expect
+```
+
+### Upload and Run the Scripts
+
+Upload these scripts to the home directory of your Raspberry Pi (/home/pi): 
+* [btctl.sh](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/btctl.sh): This script automates **bluetoothctl** and allows the Pi to accept Bluetooth pairing request without keycode.
+* [btconfig.sh](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/btconfig.sh): The script configures Bluetooth on the Pi, and makes the python script run on boot.
+* [rename.sh](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/rename.sh): The one-time-only script allows the user to change the hostname of the Pi.
+* [rfcomm-server.py](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/rfcomm-server.py): The Bluetooth server that enables the Pi to wait for incoming serial connection.
+
+Inside the Pi's home directory, make btconfig.sh executable and run it:
+
+```
+chmod +x btconfig.sh
+```
+
+```
+sudo ./btconfig.sh
+```
+
+Move btctl.sh from to /etc/init.d:
+
+```
+sudo mv btctl.sh /etc/init.d
+```
+
+Inside /etc/init.d folder, make btctl.sh executable:
+
+```
+cd /etc/init.d
+```
+
+```
+chmod +x btctl.sh
+```
+
+Configure the init system to run the script at startup:
+
+```
+sudo update-rc.d btctl.sh defaults
+```
+
+Reboot the Pi
+
+```
 sudo reboot
-Pair Your Device with Raspberry Pi
-sudo bluetoothctl
-Inside the bluetoothctl interface, type in commands:
-agent on 		 “Agent registered”
-pairable on		 “Changing pairable on succeeded”
-discoverable on	 “Changing discoverable on succeeded”
-scan on		 Will return a list of devices found.
-Once the device you want to pair your Pi with has been discovered (make sure to turn on Bluetooth on your device), enter the command pair XX:XX:XX:XX:XX:XX
-The bluetoothctl agent should ask you to confirm the passkey (yes/no). Input yes.
-You should also receive a pairing request on your device. Confirm the request.
-The Pi will print out “Pairing Successful” if the devices have been paired.
-Trust your device by entering trust XX:XX:XX:XX:XX:XX
-Enter quit to exit the bluetoothctl agent.
-Unplug Ethernet cable from the Pi.
-Connect Raspberry Pi to WiFi Networks
-Once you succeed in pairing your Pi to your device, you can open the app.
-Scan for your Raspberry Pi and connect. Note that if you just rebooted your Pi, it will take a while for the server to restart and be able to listen for connections.
-If you have failed to connect multiple times, try to reboot your Pi.
-Select the WiFi you wish to connect and enter the password.
-Note that the server checks for general network connections, so be sure to unplug the Ethernet cable from your Pi. This way it could correctly report WiFi status! 
-Disconnect when you’re done.
+```
+
+### Rename Raspberry Pi
+
+Inside the home directory, make the script executable:
+
+```
+chmod +x rename.sh
+```
+
+Run the command with desired new name as the argument:
+
+```
+sudo ./rename.sh newName
+```
+
+Reboot the Pi for changes to take effect:
+
+```
+sudo reboot
+```
+
+## How to Use
+* Scan and pair with Raspberry Pi using your device's built-in bluetooth. This app only lists paired devices.
+* Open the app and the Pi should be listed when you click **Select**.
+* Select your Pi and connect.
+* Once connected, a WiFi module will appear. Choose a WiFi network and enter the password.
+* The attempt to connect could take up to 20 seconds.
+* Disconnect when you finish.
+
+### Troubleshoot
+* If you just rebooted your Pi, it would take up to 15 seconds for the server to restart and be able to listen for connections.
+* If you still fail to connect to the Pi multiple times, reboot it.
+* The server checks for general network connections. Unplug the Ethernet cable from your Pi so it could correctly report WiFi status. 
+* If WiFi connection failed, make sure the network signal is stable, and the password entered is correct.
+
+## Authors
+
+Kelly Cho
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## Acknowledgments
+
+* [Bluetooth Serial Plugin](https://github.com/don/BluetoothSerial)
+* [Raspberry Bluetooth Demo](https://github.com/EnableTech/raspberry-bluetooth-demo)
