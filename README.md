@@ -4,7 +4,7 @@ The server component for Raspberry Pi to receive Wi-Fi password via Bluetooth
 
 ## Getting Started
 
-To set up the server on your Raspberry Pi, you can simply write the image file provided [here](https://drive.google.com/file/d/0B4uA-g8pjDs4QV9ZTmpmdG9xT0U/view) to the Pi. You will *not* have to follow the set up instructions below. Skip to **How to Use** section for instructions of the app. Your Pi will be ready to receive incoming connection.
+To set up the server on your Raspberry Pi, you can simply write the image file provided [here](https://drive.google.com/file/d/0B92Ojh_tAk-XcXktR1RDVWk5TFk/view) to the Pi. You will *not* have to follow the set up instructions below. Skip to **How to Use** section for instructions of the app. Your Pi will be ready to receive incoming connection.
 
 Otherwise, if you do *not* want to download the already-set image file, follow the steps below to set up your Pi from scratch.
 
@@ -12,9 +12,9 @@ Otherwise, if you do *not* want to download the already-set image file, follow t
 
 * You need a FAT32-formatted 8GB SD card, power supply, Ethernet cable, and a LAN.
 * Follow the instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/README.md) to write the  Raspbian Jessie Lite image to the Pi.
-* Insert the SD card to the Pi. Connect your Pi to the router with the Ethernet cable. Connect to your power supply.
-* Follow the instructions [here](https://www.raspberrypi.org/documentation/remote-access/ip-address.md) to find the IP address of the Pi. Nmap works well for me.
-* SSH into the Raspberry Pi. Note that the default username is pi, and the password is raspberry. The address should be pi@piAddressOnLan.
+* Insert the SD card to the Pi. Connect your Pi to the router with your Ethernet cable. Power the Pi up.
+* Follow the instructions [here](https://www.raspberrypi.org/documentation/remote-access/ip-address.md) to find the IP address of the Pi. Nmap is a useful open-source tool.
+* SSH into the Raspberry Pi with default username **pi** and password **raspberry**.
 
 ### Bluetooth Configurations on Raspberry Pi
 
@@ -64,7 +64,7 @@ chmod +x btconfig.sh
 sudo ./btconfig.sh
 ```
 
-Reboot the Pi
+Reboot the Pi (if you wish to rename your Pi, you can reboot after you complete the next section)
 
 ```
 sudo reboot
@@ -72,13 +72,13 @@ sudo reboot
 
 ### Rename Raspberry Pi
 
-If you wish to rename your Pi, make the script executable in the home directory:
+Make the script executable in the home directory:
 
 ```
 chmod +x rename.sh
 ```
 
-Run the command with desired new name as the argument:
+Run the command with the new name as the argument:
 
 ```
 sudo ./rename.sh newName
