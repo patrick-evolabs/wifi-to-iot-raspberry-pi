@@ -12,4 +12,8 @@ echo "@reboot /usr/bin/python /home/pi/rfcomm-server.py" >> mycron
 crontab mycron
 rm mycron
 
-
+# Make btctl.sh to run on boot
+sudo mv btctl.sh /etc/init.d
+cd /etc/init.d
+chmod +x btctl.sh
+sudo update-rc.d btctl.sh defaults
