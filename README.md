@@ -10,15 +10,15 @@ Otherwise, if you do *not* want to download the already-set image file, follow t
 
 ### Set Up Your Raspberry Pi
 
-* You need a FAT32-formatted 8GB SD card, power supply, and Ethernet cable.
+* You need a FAT32-formatted 8GB SD card, power supply, Ethernet cable, and a LAN.
 * Follow the instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/README.md) to write the  Raspbian Jessie Lite image to the Pi.
-* Insert the SD card to the Pi. Connect your Pi to the Ethernet and power it up.
-* Follow the instructions [here](https://www.raspberrypi.org/documentation/remote-access/ip-address.md) to find the IP address of the Pi. 
-* SSH to the Raspberry Pi.
+* Insert the SD card to the Pi. Connect your Pi to the router with the Ethernet cable. Connect to your power supply.
+* Follow the instructions [here](https://www.raspberrypi.org/documentation/remote-access/ip-address.md) to find the IP address of the Pi. Nmap works well for me.
+* SSH into the Raspberry Pi. Note that the default username is pi, and the password is raspberry. The address should be pi@piAddressOnLan.
 
 ### Bluetooth Configurations on Raspberry Pi
 
-Download Pip
+Download pip
 
 ```
 sudo apt-get install python-pip
@@ -48,7 +48,7 @@ sudo apt-get install expect
 
 ### Upload and Run the Scripts
 
-Upload these scripts to the home directory **/home/pi** of your Raspberry Pi: 
+Upload these scripts to the home directory **/home/pi** of your Raspberry Pi. You can accomplish this by using FTP with the same credentials as for SSH: 
 * [btctl.sh](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/btctl.sh): This script automates **bluetoothctl** and allows the Pi to accept Bluetooth pairing request without keycode.
 * [btconfig.sh](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/btconfig.sh): The script configures Bluetooth on the Pi, and makes the python script run on boot.
 * [rename.sh](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/rename.sh): The one-time-only script allows the user to change the Pi's hostname.
@@ -62,28 +62,6 @@ chmod +x btconfig.sh
 
 ```
 sudo ./btconfig.sh
-```
-
-Move **btctl.sh** to **/etc/init.d**:
-
-```
-sudo mv btctl.sh /etc/init.d
-```
-
-Inside the **/etc/init.d** folder, make **btctl.sh** executable:
-
-```
-cd /etc/init.d
-```
-
-```
-chmod +x btctl.sh
-```
-
-Configure the init system to run the script at startup:
-
-```
-sudo update-rc.d btctl.sh defaults
 ```
 
 Reboot the Pi
@@ -116,7 +94,7 @@ sudo reboot
 ### Mobile App
 * Unplug the Ethernet cable from the Pi.
 * Scan and pair with Raspberry Pi using your device's built-in Bluetooth. This app only lists paired devices.
-* Open the app and the Pi should be listed when you click **Select**.
+* Open the [WiFi-to-IOT](https://play.google.com/store/apps/details?id=com.bluepi) app and the Pi should be listed when you click **Select**.
 * Select your Pi and connect.
 * Once connected, the WiFi section will appear. Choose a WiFi network and enter the password.
 * The attempt to connect could take up to 20 seconds.
@@ -127,7 +105,7 @@ sudo reboot
 * If you still fail to connect to the Pi multiple times, reboot it.
 * The server checks for general network connections. Unplug the Ethernet cable from your Pi so it could correctly report WiFi status. 
 * If WiFi connection failed, make sure the network signal is stable, and the password entered is correct.
-* Make sure no other devices are connected to the Pi when you attemp to connect.
+* Make sure no other devices are connected to the Pi when you attempt to connect.
 
 ## Authors
 
@@ -135,7 +113,7 @@ Kelly Cho
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/patrick-evolabs/wifi-to-iot-raspberry-pi/blob/master/LICENSE) file for details.
 
 ## Acknowledgments
 
