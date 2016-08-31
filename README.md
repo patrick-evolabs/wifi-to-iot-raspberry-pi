@@ -102,7 +102,7 @@ sudo reboot
 
 ### Troubleshoot
 * If you just rebooted your Pi, it would take up to 15 seconds for the server to restart and be able to listen for connections.
-* If you still fail to connect to the Pi multiple times, reboot it.
+* If you still fail to connect to the Pi multiple times, reboot it. Try unpair the Pi, and pair with it again.
 * The server checks for general network connections. Unplug the Ethernet cable from your Pi so it could correctly report WiFi status. 
 * If WiFi connection failed, make sure the network signal is stable, and the password entered is correct.
 * Make sure no other devices are connected to the Pi when you attempt to connect.
