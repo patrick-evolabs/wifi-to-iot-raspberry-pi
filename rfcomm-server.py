@@ -128,7 +128,10 @@ def writeFile (ssid, pwd):
     with open ("/etc/wpa_supplicant/wpa_supplicant.conf", 'w') as outfile:
 	for line in lines:
 	    outfile.write(line)
-	outfile.write ("network={\n\tssid=\"" + ssid + "\"\n\tpsk=\"" + pwd + "\"\n}")
+	if (pwd == "key_mgmt=NONE"):
+       	    outfile.write ("network={\n\tssid=\"" + ssid + "\"\n\t" + pwd + "\n}")
+    	else:
+            outfile.write ("network={\n\tssid=\"" + ssid + "\"\n\tpsk=\"" + pwd + "\"\n}")
 
     os.system ('sudo ifdown wlan0')
     os.system ('sudo ifup wlan0 > wlan0.log')
